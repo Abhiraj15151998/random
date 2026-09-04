@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Gate Entry — LPG Bottling Plant</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0F1E38">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Gate Entry">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0F1E38; --navy-deep:#0A1526; --navy-light:#1E3A63; --paper:#EEF1F6; --card:#FFFFFF;
+    --ink:#171B24; --muted:#65707F; --line:#E4E8EF;
+    --in:#1C825C; --in:#1B8A5A; --in-bg:#E1F4EA;
+    --out:#C6432A; --out-bg:#FBE8E3;
+    --amber:#B4790D; --amber-bg:#FCF1DC;
+    --accent:#F2A93B;
+    --mono: 'JetBrains Mono','Consolas',monospace;
+    --sans: 'Inter','Segoe UI',Arial,sans-serif;
+    --cond: 'Oswald','Arial Narrow',sans-serif;
+    --shadow-sm: 0 1px 2px rgba(15,30,56,.06), 0 1px 1px rgba(15,30,56,.04);
+    --shadow-md: 0 4px 14px rgba(15,30,56,.08), 0 1px 3px rgba(15,30,56,.06);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;color:var(--ink);font-family:var(--sans);
+    background:
+      radial-gradient(1200px 400px at 100% -10%, rgba(30,58,99,.08), transparent),
+      var(--paper);
+  }
+
+  .topbar{
+    background:linear-gradient(135deg, var(--navy) 0%, var(--navy-deep) 100%);
+    color:#fff;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;
+    flex-wrap:wrap;gap:10px;box-shadow:0 2px 12px rgba(0,0,0,.18);position:relative;overflow:hidden;
+  }
+  .topbar::after{
+    content:"";position:absolute;top:0;right:-40px;bottom:0;width:180px;
+    background:linear-gradient(120deg, transparent 40%, rgba(242,169,59,.10) 55%, transparent 70%);
+    pointer-events:none;
+  }
+  .topbar-left{display:flex;align-items:center;gap:12px;}
+  .topbar-icon{
+    width:38px;height:38px;border-radius:9px;background:rgba(242,169,59,.16);
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;
+    border:1px solid rgba(242,169,59,.3);
+  }
+  .topbar h1{font-family:var(--cond);font-weight:600;font-size:21px;letter-spacing:.4px;margin:0;text-transform:uppercase;}
+  .topbar .sub{font-size:11px;color:#93A8C9;letter-spacing:1.5px;text-transform:uppercase;margin-top:2px;}
+  .clock{font-family:var(--mono);font-size:15px;color:#FFDCA0;background:rgba(255,255,255,.06);padding:6px 12px;border-radius:7px;border:1px solid rgba(255,255,255,.08);}
+  .wrap{max-width:920px;margin:0 auto;padding:24px 20px 60px;}
+
+  .barrier{
+    display:flex;gap:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;
+    margin-bottom:22px;background:var(--card);box-shadow:var(--shadow-sm);
+  }
+  .barrier button{
+    flex:1;padding:18px;border:none;background:var(--card);font-family:var(--cond);font-size:18px;
+    letter-spacing:1px;text-transform:uppercase;cursor:pointer;color:var(--muted);
+    border-bottom:3px solid transparent;transition:.18s ease;
+  }
+  .barrier button:hover{background:#FAFBFD;}
+  .barrier button.active-in{color:var(--in);background:var(--in-bg);border-bottom-color:var(--in);}
+  .barrier button.active-out{color:var(--out);background:var(--out-bg);border-bottom-color:var(--out);}
+
+  .card{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px 22px;
+    margin-bottom:18px;box-shadow:var(--shadow-sm);transition:box-shadow .2s ease;
+  }
+  .card h2{
+    font-family:var(--cond);font-size:13px;text-transform:uppercase;letter-spacing:1.2px;
+    color:var(--navy);margin:0 0 16px;display:flex;align-items:center;gap:8px;
+    padding-bottom:10px;border-bottom:1px solid var(--line);
+  }
+
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  label{display:block;font-size:11.5px;font-weight:600;color:var(--muted);margin-bottom:5px;letter-spacing:.3px;text-transform:uppercase;}
+  input[type=text],input[type=number],textarea,select{
+    width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:7px;font-size:14px;
+    font-family:var(--sans);background:#FCFDFE;color:var(--ink);transition:.15s;
+  }
+  input[type=text]:focus,input[type=number]:focus,textarea:focus,select:focus{
+    outline:none;border-color:var(--navy-light);background:#fff;box-shadow:0 0 0 3px rgba(30,58,99,.10);
+  }
+  input[type=text].mono, .ttinput{font-family:var(--mono);text-transform:uppercase;letter-spacing:1px;font-weight:500;}
+  .field{margin-bottom:14px;}
+
+  .cyl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+  .cyl{border:1.5px solid var(--line);border-radius:9px;padding:12px 10px;text-align:center;background:#FCFDFE;transition:.15s;}
+  .cyl:hover{border-color:#C9D3E2;}
+  .cyl .wt{font-family:var(--mono);font-size:13px;color:var(--navy);font-weight:600;margin-bottom:8px;}
+  .cyl .wt .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:middle;}
+  .dot.red{background:#C6432A;}
+  .dot.blue{background:#2563A8;}
+  .stepper{display:flex;align-items:center;justify-content:center;gap:7px;}
+  .stepper button{
+    width:28px;height:28px;border-radius:7px;border:1px solid var(--line);background:#fff;
+    font-size:16px;cursor:pointer;line-height:1;color:var(--navy);transition:.15s;
+  }
+  .stepper button:hover{background:var(--navy);color:#fff;border-color:var(--navy);}
+  .stepper input{width:50px;text-align:center;padding:6px 2px;font-family:var(--mono);font-weight:600;}
+
+  .totals{display:flex;gap:22px;font-family:var(--mono);font-size:13px;color:var(--muted);margin-top:14px;padding-top:12px;border-top:1px dashed var(--line);}
+  .totals b{color:var(--navy);font-size:14px;}
+
+  .submit-row{display:flex;gap:10px;align-items:center;}
+  .btn-primary{
+    flex:1;padding:14px;border:none;border-radius:9px;color:#fff;font-family:var(--cond);
+    font-size:16px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:.15s;
+    box-shadow:var(--shadow-sm);
+  }
+  .btn-primary:hover{filter:brightness(1.08);transform:translateY(-1px);box-shadow:var(--shadow-md);}
+  .btn-primary.in{background:linear-gradient(135deg,#1F9563,var(--in));}
+  .btn-primary.out{background:linear-gradient(135deg,#D3502F,var(--out));}
+  .btn-ghost{
+    padding:14px 18px;border:1.5px solid var(--line);background:#fff;border-radius:9px;
+    cursor:pointer;font-size:13px;font-weight:600;color:var(--muted);transition:.15s;
+  }
+  .btn-ghost:hover{border-color:var(--navy-light);color:var(--navy);}
+
+  .toast{
+    position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(20px);
+    background:var(--navy);color:#fff;padding:11px 20px;border-radius:9px;font-size:13px;
+    opacity:0;transition:.25s;pointer-events:none;z-index:50;box-shadow:0 6px 20px rgba(0,0,0,.25);
+  }
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  th,td{padding:10px 8px;text-align:left;border-bottom:1px solid var(--line);}
+  th{font-family:var(--cond);text-transform:uppercase;font-size:11px;letter-spacing:.6px;color:var(--muted);background:#FAFBFD;}
+  tbody tr:hover{background:#FAFBFD;}
+  td.mono, th.mono{font-family:var(--mono);}
+  .chip{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.4px;}
+  .chip.in{background:var(--in-bg);color:var(--in);}
+  .chip.out{background:var(--out-bg);color:var(--out);}
+  .chip.shortfall{background:var(--out-bg);color:var(--out);}
+  .chip.excess{background:var(--amber-bg);color:var(--amber);}
+  .badge-pending{
+    display:inline-block;background:var(--amber-bg);color:var(--amber);font-size:11px;font-weight:600;
+    padding:4px 11px;border-radius:20px;margin-left:auto;letter-spacing:.3px;text-transform:none;
+  }
+  .card h2{justify-content:space-between;}
+  .empty{text-align:center;color:var(--muted);padding:34px 0;font-size:13px;}
+
+  .toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:10px;flex-wrap:wrap;}
+  .toolbar input{width:auto;flex:1;min-width:140px;}
+  .toolbar .btn-ghost{padding:9px 14px;font-size:12px;white-space:nowrap;}
+
+  .settings summary{cursor:pointer;font-size:12.5px;color:var(--navy-light);font-weight:600;letter-spacing:.2px;}
+  .settings .field{margin-top:12px;}
+  .sync-status{font-size:11px;margin-left:6px;}
+  .sync-status.ok{color:var(--in);}
+  .sync-status.err{color:var(--out);}
+  .sync-status.pending{color:var(--amber);}
+
+  @media(max-width:640px){
+    .grid2{grid-template-columns:1fr;}
+    .cyl-grid{grid-template-columns:repeat(2,1fr);}
+    .wrap{padding:18px 14px 50px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="topbar-icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M3 17V8a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v9M3 17h11M3 17H1.5M15 11h3.5a1 1 0 0 1 .8.4l2 2.67a1 1 0 0 1 .2.6V17a1 1 0 0 1-1 1H15" stroke="#F2A93B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="6.5" cy="17.5" r="1.6" stroke="#F2A93B" stroke-width="1.6"/>
+        <circle cx="16.5" cy="17.5" r="1.6" stroke="#F2A93B" stroke-width="1.6"/>
+      </svg>
+    </div>
+    <div>
+      <h1>Gate Entry Log</h1>
+      <div class="sub">LPG Bottling Plant</div>
+    </div>
+  </div>
+  <div class="clock" id="clock">--:--:--</div>
+</div>
+
+<div class="wrap">
+
+  <div class="barrier">
+    <button id="modeInBtn" onclick="setMode('IN')">↓ Vehicle IN</button>
+    <button id="modeOutBtn" onclick="setMode('OUT')">↑ Vehicle OUT</button>
+  </div>
+
+  <div class="card">
+    <h2>Vehicle &amp; gate pass details</h2>
+    <div class="grid2">
+      <div class="field">
+        <label for="ttNo">TT / vehicle number</label>
+        <input type="text" id="ttNo" class="mono ttinput" placeholder="AS01AB1234" list="ttMasterDatalist" oninput="checkTTHint()">
+        <datalist id="ttMasterDatalist"></datalist>
+        <div id="ttHint" style="font-size:11px;color:var(--amber);margin-top:4px;display:none;">New vehicle — will be added to the master list on submit.</div>
+      </div>
+      <div class="field">
+        <label for="invoiceNo">Invoice number</label>
+        <input type="text" id="invoiceNo" class="mono" placeholder="INV-000000">
+      </div>
+      <div class="field">
+        <label for="entryTime">Date &amp; time</label>
+        <input type="text" id="entryTime" class="mono" readonly>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Cylinder quantity</h2>
+    <div class="cyl-grid">
+      <div class="cyl">
+        <div class="wt">14.2 kg</div>
+        <div class="stepper">
+          <button onclick="step('q142',-1)">−</button>
+          <input type="number" id="q142" value="0" min="0" oninput="calcTotals()">
+          <button onclick="step('q142',1)">+</button>
+        </div>
+      </div>
+      <div class="cyl">
+        <div class="wt">19 kg</div>
+        <div class="stepper">
+          <button onclick="step('q19',-1)">−</button>
+          <input type="number" id="q19" value="0" min="0" oninput="calcTotals()">
+          <button onclick="step('q19',1)">+</button>
+        </div>
+      </div>
+      <div class="cyl">
+        <div class="wt">47.5 kg</div>
+        <div class="stepper">
+          <button onclick="step('q475',-1)">−</button>
+          <input type="number" id="q475" value="0" min="0" oninput="calcTotals()">
+          <button onclick="step('q475',1)">+</button>
+        </div>
+      </div>
+      <div class="cyl">
+        <div class="wt">10 kg</div>
+        <div class="stepper">
+          <button onclick="step('q10',-1)">−</button>
+          <input type="number" id="q10" value="0" min="0" oninput="calcTotals()">
+          <button onclick="step('q10',1)">+</button>
+        </div>
+      </div>
+      <div class="cyl">
+        <div class="wt"><span class="dot red"></span>5 kg Red</div>
+        <div class="stepper">
+          <button onclick="step('q5r',-1)">−</button>
+          <input type="number" id="q5r" value="0" min="0" oninput="calcTotals()">
+          <button onclick="step('q5r',1)">+</button>
+        </div>
+      </div>
+      <div class="cyl">
+        <div class="wt"><span class="dot blue"></span>5 kg FTL Blue</div>
+        <div class="stepper">
+          <button onclick="step('q5b',-1)">−</button>
+          <input type="number" id="q5b" value="0" min="0" oninput="calcTotals()">
+          <button onclick="step('q5b',1)">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="totals">
+      <div>Total cylinders: <b id="totCyl">0</b></div>
+      <div>Total weight: <b id="totWt">0</b> kg</div>
+    </div>
+    <div class="field" style="margin-top:12px;">
+      <label for="remarks">Remarks (optional)</label>
+      <textarea id="remarks" rows="2" placeholder="Any remarks"></textarea>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Master vehicle list <span class="badge-pending" id="masterCountBadge">0 vehicles</span></h2>
+    <details class="settings">
+      <summary>View / edit master list</summary>
+      <div class="field">
+        <label for="masterListBox">TT numbers (one per line, or comma-separated)</label>
+        <textarea id="masterListBox" rows="5" placeholder="AS01AB1234&#10;AS01CD5678&#10;AS02EF9012"></textarea>
+      </div>
+      <div class="submit-row" style="margin-top:8px;">
+        <button class="btn-ghost" onclick="saveMasterListFromBox()">Save list</button>
+        <span style="font-size:11px;color:var(--muted);">Saved on this device only. Any new TT no. entered on the form is added here automatically.</span>
+      </div>
+    </details>
+  </div>
+
+  <div class="card">
+    <div class="submit-row">
+      <button class="btn-primary in" id="submitBtn" onclick="submitEntry()">Log vehicle IN</button>
+      <button class="btn-ghost" onclick="clearForm()">Clear</button>
+    </div>
+    <details class="settings">
+      <summary>Google Sheet sync settings (optional)</summary>
+      <div class="field">
+        <label for="webhookUrl">Apps Script web app URL</label>
+        <input type="text" id="webhookUrl" placeholder="https://script.google.com/macros/s/.../exec" value="https://script.google.com/macros/s/AKfycbweg1Zc_yh3Jnji9GiaaqQkjVHZwEpTAS_NEPDDQDbIYKRw9WLbTxN_Wofsz-5N1zFS/exec" oninput="saveWebhookUrl()">
+        <span style="font-size:11px;color:var(--muted);">Paste the deployed web app URL here to auto-sync each entry to your Google Sheet. Leave blank to log locally only. Saved on this device.</span>
+      </div>
+      <div class="submit-row" style="margin-top:8px;">
+        <button class="btn-ghost" onclick="testConnection()">Test connection</button>
+        <span id="testResult" style="font-size:12px;"></span>
+      </div>
+    </details>
+  </div>
+
+  <div class="card">
+    <h2>Session log</h2>
+    <div class="toolbar">
+      <input type="text" id="filterBox" placeholder="Filter by TT no, invoice no..." oninput="renderLog()">
+      <button class="btn-ghost" onclick="exportCSV()">Export CSV</button>
+    </div>
+    <div style="overflow-x:auto;">
+      <table id="logTable">
+        <thead>
+          <tr>
+            <th>Time</th><th>Mode</th><th class="mono">TT no</th>
+            <th class="mono">Invoice no</th><th class="mono">14.2</th><th class="mono">19</th><th class="mono">47.5</th><th class="mono">10</th><th class="mono">5R</th><th class="mono">5B</th>
+            <th class="mono">Total kg</th><th>Sync</th>
+          </tr>
+        </thead>
+        <tbody id="logBody"></tbody>
+      </table>
+      <div class="empty" id="emptyMsg">No entries logged this session yet.</div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Return discrepancies <span class="badge-pending" id="pendingBadge">0 out, awaiting return</span></h2>
+    <div style="overflow-x:auto;">
+      <table id="reconTable">
+        <thead>
+          <tr>
+            <th class="mono">TT no</th><th class="mono">Invoice no</th><th>Out time</th><th>In time</th>
+            <th class="mono">Δ14.2</th><th class="mono">Δ19</th><th class="mono">Δ47.5</th><th class="mono">Δ10</th><th class="mono">Δ5R</th><th class="mono">Δ5B</th>
+            <th class="mono">Δ total kg</th><th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="reconBody"></tbody>
+      </table>
+      <div class="empty" id="reconEmptyMsg">No quantity mismatches on return yet — all matched TT + invoice pairs reconciled cleanly.</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+let mode = 'IN';
+let entries = [];
+let pendingOut = {};
+let reconciliations = [];
+let masterList = [];
+
+function loadMasterList(){
+  try{
+    const saved = localStorage.getItem('gateMasterList');
+    masterList = saved ? JSON.parse(saved) : [];
+  }catch(e){ masterList = []; }
+  renderMasterListUI();
+}
+
+function saveMasterList(){
+  try{ localStorage.setItem('gateMasterList', JSON.stringify(masterList)); }catch(e){}
+  renderMasterListUI();
+}
+
+function renderMasterListUI(){
+  const datalist = document.getElementById('ttMasterDatalist');
+  datalist.innerHTML = masterList.map(tt => `<option value="${tt}">`).join('');
+  document.getElementById('masterCountBadge').textContent = `${masterList.length} vehicles`;
+  document.getElementById('masterListBox').value = masterList.join('\n');
+}
+
+function saveMasterListFromBox(){
+  const raw = document.getElementById('masterListBox').value;
+  const list = raw.split(/[\n,]/).map(s => s.trim().toUpperCase()).filter(Boolean);
+  masterList = [...new Set(list)];
+  saveMasterList();
+  showToast('Master list saved.');
+}
+
+function addToMasterList(tt){
+  if(!masterList.includes(tt)){
+    masterList.push(tt);
+    saveMasterList();
+    return true;
+  }
+  return false;
+}
+
+function checkTTHint(){
+  const tt = document.getElementById('ttNo').value.trim().toUpperCase();
+  const hint = document.getElementById('ttHint');
+  hint.style.display = (tt && !masterList.includes(tt)) ? 'block' : 'none';
+}
+
+function saveWebhookUrl(){
+  try{ localStorage.setItem('gateWebhookUrl', document.getElementById('webhookUrl').value.trim()); }catch(e){}
+}
+
+function loadWebhookUrl(){
+  try{
+    const saved = localStorage.getItem('gateWebhookUrl');
+    if(saved) document.getElementById('webhookUrl').value = saved;
+  }catch(e){}
+}
+
+function testConnection(){
+  const webhook = document.getElementById('webhookUrl').value.trim();
+  const result = document.getElementById('testResult');
+  if(!webhook){
+    result.textContent = 'Paste a web app URL first.';
+    result.style.color = 'var(--out)';
+    return;
+  }
+  result.textContent = 'Testing…';
+  result.style.color = 'var(--muted)';
+  fetch(webhook, { method: 'GET' })
+    .then(res => res.text().then(text => {
+      if(res.ok){
+        result.textContent = `Reachable (HTTP ${res.status}): ${text.slice(0,80)}`;
+        result.style.color = 'var(--in)';
+      } else {
+        result.textContent = `HTTP ${res.status}: ${text.slice(0,100)}`;
+        result.style.color = 'var(--out)';
+      }
+    }))
+    .catch(err => {
+      result.textContent = `Failed to reach URL: ${err.message}`;
+      result.style.color = 'var(--out)';
+    });
+}
+
+function pad(n){return n.toString().padStart(2,'0');}
+function fmtNow(){
+  const d = new Date();
+  return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+}
+function tickClock(){
+  document.getElementById('clock').textContent = fmtNow().split(' ')[1];
+  document.getElementById('entryTime').value = fmtNow();
+}
+setInterval(tickClock,1000);
+tickClock();
+
+function setMode(m){
+  mode = m;
+  const inBtn = document.getElementById('modeInBtn');
+  const outBtn = document.getElementById('modeOutBtn');
+  inBtn.classList.toggle('active-in', m==='IN');
+  outBtn.classList.toggle('active-out', m==='OUT');
+  const btn = document.getElementById('submitBtn');
+  btn.textContent = m==='IN' ? 'Log vehicle IN' : 'Log vehicle OUT';
+  btn.className = 'btn-primary ' + (m==='IN' ? 'in' : 'out');
+}
+setMode('IN');
+
+function step(id, delta){
+  const el = document.getElementById(id);
+  let v = parseInt(el.value||'0',10) + delta;
+  if(v<0) v=0;
+  el.value = v;
+  calcTotals();
+}
+
+function calcTotals(){
+  const q142 = parseInt(document.getElementById('q142').value||'0',10);
+  const q19 = parseInt(document.getElementById('q19').value||'0',10);
+  const q475 = parseInt(document.getElementById('q475').value||'0',10);
+  const q10 = parseInt(document.getElementById('q10').value||'0',10);
+  const q5r = parseInt(document.getElementById('q5r').value||'0',10);
+  const q5b = parseInt(document.getElementById('q5b').value||'0',10);
+  const totCyl = q142+q19+q475+q10+q5r+q5b;
+  const totWt = (q142*14.2 + q19*19 + q475*47.5 + q10*10 + q5r*5 + q5b*5);
+  document.getElementById('totCyl').textContent = totCyl;
+  document.getElementById('totWt').textContent = Math.round(totWt*10)/10;
+  return {q142,q19,q475,q10,q5r,q5b,totCyl,totWt};
+}
+
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2200);
+}
+
+function clearForm(){
+  document.getElementById('ttNo').value='';
+  document.getElementById('invoiceNo').value='';
+  document.getElementById('remarks').value='';
+  ['q142','q19','q475','q10','q5r','q5b'].forEach(id=>document.getElementById(id).value=0);
+  calcTotals();
+}
+
+function submitEntry(){
+  const ttNo = document.getElementById('ttNo').value.trim();
+  if(!ttNo){
+    showToast('Enter the TT / vehicle number before logging.');
+    return;
+  }
+  const t = calcTotals();
+  const entry = {
+    time: fmtNow(),
+    mode: mode,
+    ttNo: ttNo.toUpperCase(),
+    invoiceNo: document.getElementById('invoiceNo').value.trim(),
+    q142: t.q142, q19: t.q19, q475: t.q475, q10: t.q10, q5r: t.q5r, q5b: t.q5b,
+    totWt: Math.round(t.totWt*10)/10,
+    remarks: document.getElementById('remarks').value.trim(),
+    sync: 'local'
+  };
+  const isNewTT = addToMasterList(entry.ttNo);
+  document.getElementById('ttHint').style.display = 'none';
+
+  entries.unshift(entry);
+  renderLog();
+
+  if(mode === 'OUT'){
+    const key = entry.ttNo + '|' + entry.invoiceNo;
+    if(!pendingOut[key]) pendingOut[key] = [];
+    pendingOut[key].push({
+      time: entry.time, q142: entry.q142, q19: entry.q19, q475: entry.q475, q10: entry.q10, q5r: entry.q5r, q5b: entry.q5b, totWt: entry.totWt
+    });
+    renderReconciliation();
+  } else if(mode === 'IN'){
+    const key = entry.ttNo + '|' + entry.invoiceNo;
+    if(pendingOut[key] && pendingOut[key].length){
+      const dispatch = pendingOut[key].shift();
+      const d142 = dispatch.q142 - entry.q142;
+      const d19 = dispatch.q19 - entry.q19;
+      const d475 = dispatch.q475 - entry.q475;
+      const d10 = dispatch.q10 - entry.q10;
+      const d5r = dispatch.q5r - entry.q5r;
+      const d5b = dispatch.q5b - entry.q5b;
+      const dTotal = Math.round((dispatch.totWt - entry.totWt)*10)/10;
+      const isMatched = dTotal===0 && d142===0 && d19===0 && d475===0 && d10===0 && d5r===0 && d5b===0;
+      if(!isMatched){
+        const status = dTotal>0 ? 'shortfall' : 'excess';
+        reconciliations.unshift({
+          ttNo: entry.ttNo, invoiceNo: entry.invoiceNo, outTime: dispatch.time, inTime: entry.time,
+          d142, d19, d475, d10, d5r, d5b, dTotal, status
+        });
+        renderReconciliation();
+      }
+    }
+  }
+
+  showToast(isNewTT ? `Logged: ${entry.ttNo} — ${mode} (new vehicle added to master list)` : `Logged: ${entry.ttNo} — ${mode}`);
+
+  const webhook = document.getElementById('webhookUrl').value.trim();
+  if(webhook){
+    entry.sync = 'pending';
+    renderLog();
+    fetch(webhook, {
+      method: 'POST',
+      headers: {'Content-Type':'text/plain'},
+      body: JSON.stringify(entry)
+    }).then(res => res.text().then(text => {
+      if(res.ok){
+        entry.sync = 'sent';
+      } else {
+        entry.sync = 'error';
+        entry.syncError = `HTTP ${res.status}: ${text.slice(0,120)}`;
+      }
+      renderLog();
+    })).catch(err => {
+      entry.sync = 'error';
+      entry.syncError = err.message || 'Network/CORS error — see chat for troubleshooting.';
+      renderLog();
+    });
+  }
+
+  clearForm();
+}
+
+function renderLog(){
+  const filter = document.getElementById('filterBox').value.toLowerCase();
+  const body = document.getElementById('logBody');
+  const empty = document.getElementById('emptyMsg');
+  const filtered = entries.filter(e =>
+    !filter ||
+    e.ttNo.toLowerCase().includes(filter) ||
+    e.invoiceNo.toLowerCase().includes(filter)
+  );
+  body.innerHTML = '';
+  if(filtered.length===0){
+    empty.style.display='block';
+  } else {
+    empty.style.display='none';
+    filtered.forEach(e=>{
+      const tr = document.createElement('tr');
+      const syncLabel = e.sync==='local' ? '—' : e.sync==='pending' ? 'sending…' : e.sync==='sent' ? 'synced' : 'failed';
+      const syncTitle = e.sync==='error' && e.syncError ? ` title="${e.syncError.replace(/"/g,'&quot;')}"` : '';
+      tr.innerHTML = `
+        <td class="mono">${e.time}</td>
+        <td><span class="chip ${e.mode.toLowerCase()}">${e.mode}</span></td>
+        <td class="mono">${e.ttNo}</td>
+        <td class="mono">${e.invoiceNo||'—'}</td>
+        <td class="mono">${e.q142}</td>
+        <td class="mono">${e.q19}</td>
+        <td class="mono">${e.q475}</td>
+        <td class="mono">${e.q10}</td>
+        <td class="mono">${e.q5r}</td>
+        <td class="mono">${e.q5b}</td>
+        <td class="mono">${e.totWt}</td>
+        <td${syncTitle} style="${e.sync==='error' ? 'cursor:help;text-decoration:underline dotted;' : ''}">${syncLabel}</td>
+      `;
+      body.appendChild(tr);
+    });
+  }
+}
+
+function renderReconciliation(){
+  const pendingCount = Object.values(pendingOut).reduce((sum,arr)=>sum+arr.length, 0);
+  document.getElementById('pendingBadge').textContent = `${pendingCount} out, awaiting return`;
+
+  const body = document.getElementById('reconBody');
+  const empty = document.getElementById('reconEmptyMsg');
+  body.innerHTML = '';
+  if(reconciliations.length===0){
+    empty.style.display='block';
+  } else {
+    empty.style.display='none';
+    reconciliations.forEach(r=>{
+      const tr = document.createElement('tr');
+      const statusLabel = r.status==='shortfall' ? 'Shortfall' : 'Excess';
+      const fmtDiff = v => v>0 ? `+${v}` : `${v}`;
+      tr.innerHTML = `
+        <td class="mono">${r.ttNo}</td>
+        <td class="mono">${r.invoiceNo||'—'}</td>
+        <td class="mono">${r.outTime}</td>
+        <td class="mono">${r.inTime}</td>
+        <td class="mono">${fmtDiff(r.d142)}</td>
+        <td class="mono">${fmtDiff(r.d19)}</td>
+        <td class="mono">${fmtDiff(r.d475)}</td>
+        <td class="mono">${fmtDiff(r.d10)}</td>
+        <td class="mono">${fmtDiff(r.d5r)}</td>
+        <td class="mono">${fmtDiff(r.d5b)}</td>
+        <td class="mono">${fmtDiff(r.dTotal)}</td>
+        <td><span class="chip ${r.status}">${statusLabel}</span></td>
+      `;
+      body.appendChild(tr);
+    });
+  }
+}
+
+function exportCSV(){
+  if(entries.length===0){
+    showToast('No entries to export yet.');
+    return;
+  }
+  const headers = ['Time','Mode','TT No','Invoice No','Qty 14.2kg','Qty 19kg','Qty 47.5kg','Qty 10kg','Qty 5kg Red','Qty 5kg FTL Blue','Total Weight (kg)','Remarks'];
+  const rows = entries.map(e => [e.time,e.mode,e.ttNo,e.invoiceNo,e.q142,e.q19,e.q475,e.q10,e.q5r,e.q5b,e.totWt,e.remarks]);
+  const csv = [headers, ...rows].map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob = new Blob([csv], {type:'text/csv'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `gate_entry_log_${fmtNow().slice(0,10)}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+calcTotals();
+renderReconciliation();
+loadMasterList();
+loadWebhookUrl();
+
+if('serviceWorker' in navigator){
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(()=>{});
+  });
+}
+</script>
+
+</body>
+</html>
